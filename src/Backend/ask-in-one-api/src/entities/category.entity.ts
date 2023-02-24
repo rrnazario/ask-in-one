@@ -1,6 +1,7 @@
-import { Column } from "typeorm";
+import { Column, Entity } from "typeorm";
 import { AggregationRoot } from "./seed-work"
 
+@Entity()
 export class Category extends AggregationRoot {
     @Column({
         nullable: false,
