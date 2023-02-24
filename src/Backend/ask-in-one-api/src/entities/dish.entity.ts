@@ -1,7 +1,8 @@
-import { Column, JoinColumn, OneToOne } from "typeorm";
+import { Column, Entity, JoinColumn, OneToOne } from "typeorm";
 import { Category } from "./category.entity";
 import { AggregationRoot } from "./seed-work";
 
+@Entity()
 export class Dish extends AggregationRoot {
     @Column({
         nullable: false,

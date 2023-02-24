@@ -1,6 +1,7 @@
-import { Column, JoinColumn, ManyToOne, OneToMany } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
 import { AggregationRoot, AskEntity } from "./seed-work";
 
+@Entity()
 export class Company extends AggregationRoot {
     @Column({
         nullable: false,
@@ -18,6 +19,7 @@ export class Company extends AggregationRoot {
     Branches: CompanyBranch[];
 }
 
+@Entity()
 export class CompanyBranch extends AskEntity {
 
     @ManyToOne(() => Company, (c) => c.Branches)
@@ -28,4 +30,10 @@ export class CompanyBranch extends AskEntity {
         type: 'int4',
     })
     companyId: number;
+
+    @Column({
+        nullable: false,
+        default: '',
+    })
+    name: string;
 }

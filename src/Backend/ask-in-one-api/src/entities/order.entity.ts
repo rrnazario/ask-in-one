@@ -1,7 +1,8 @@
-import { Column, JoinColumn, ManyToOne, OneToMany, OneToOne } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from "typeorm";
 import { Dish } from "./dish.entity";
 import { AggregationRoot, AskEntity } from "./seed-work";
 
+@Entity()
 export class Order extends AggregationRoot {
     /*Pedido
 - NrMesa
@@ -36,6 +37,7 @@ export enum OrderStatus {
     Closed
 }
 
+@Entity()
 export class OrderItem extends AskEntity {
 
     @ManyToOne(() => Order, (c) => c.Items)
@@ -55,4 +57,10 @@ export class OrderItem extends AskEntity {
         type: 'int4',
     })
     dishId: number;
+
+    @Column({
+        type: 'float4',
+        nullable: false,
+    })
+    amount: number;
 }
