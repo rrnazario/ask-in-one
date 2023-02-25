@@ -30,6 +30,7 @@ export class User extends AggregationRoot {
     @JoinColumn({ name: 'companyId' })
     company: Company;
 
+    @AutoMap()
     @Column({
         type: 'int4',
     })
