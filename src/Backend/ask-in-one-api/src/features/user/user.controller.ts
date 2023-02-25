@@ -1,7 +1,7 @@
 import { MapPipe } from '@automapper/nestjs';
 import { Body, Controller, HttpCode, Post, UsePipes, ValidationPipe } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
-import { AddUserCommand, AddUserRequest } from './user-add.feature';
+import { AddUserCommand, AddUserRequest } from './user-add';
 
 @Controller('user')
 export class UserController {
