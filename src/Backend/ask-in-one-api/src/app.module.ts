@@ -4,7 +4,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import entities from './entities';
-import { WaiterModule } from './features/waiter/waiter.module';
+import { UserModule } from './features/user/user.module';
 
 @Module({
   imports: [
@@ -15,7 +15,7 @@ import { WaiterModule } from './features/waiter/waiter.module';
     TypeOrmModule.forRootAsync({
       imports: [
         ConfigModule,
-        WaiterModule,
+        UserModule,
       ],
       useFactory: (configService: ConfigService) => ({
         type: 'postgres',
@@ -26,7 +26,7 @@ import { WaiterModule } from './features/waiter/waiter.module';
         database: configService.get('DB_NAME'),
         entities,
         migrations: ['./migrations/*.ts'],
-        //synchronize: true
+        synchronize: true
       }),        
       inject: [ConfigService],
     })

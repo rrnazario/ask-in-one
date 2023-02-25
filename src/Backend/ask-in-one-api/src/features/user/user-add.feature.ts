@@ -4,10 +4,10 @@ import { InjectMapper } from "@automapper/nestjs";
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 import { InjectRepository } from "@nestjs/typeorm";
 import { IsNotEmpty, MinLength } from "class-validator";
-import { Waiter } from "src/entities/waiter.entity";
+import { User } from "src/entities/user.entity";
 import { Repository } from "typeorm";
 
-export class AddWaiterRequest {
+export class AddUserRequest {
     @AutoMap()
     public readonly name: string;
 
@@ -24,7 +24,7 @@ export class AddWaiterRequest {
     }
 }
 
-export class AddWaiterCommand {
+export class AddUserCommand {
 
     @AutoMap()
     @IsNotEmpty()
@@ -48,23 +48,23 @@ export class AddWaiterCommand {
     }
 }
 
-@CommandHandler(AddWaiterCommand)
-export class AddWaiterCommandHandler implements ICommandHandler<AddWaiterCommand> {
+@CommandHandler(AddUserCommand)
+export class AddUserCommandHandler implements ICommandHandler<AddUserCommand> {
     constructor(
-        @InjectRepository(Waiter)
-        private readonly waiterRepository: Repository<Waiter>,
+        @InjectRepository(User)
+        private readonly userRepository: Repository<User>,
         @InjectMapper() private readonly mapper: Mapper,
     ) { }
 
-    async execute(cmd: AddWaiterCommand): Promise<any> {
-        const model = this.mapper.map(cmd, AddWaiterCommand, Waiter);
+    async execute(cmd: AddUserCommand): Promise<any> {
+        const model = this.mapper.map(cmd, AddUserCommand, User);
 
-        if (! await this.waiterRepository.exist({
+        if (! await this.userRepository.exist({
             where: {
                 login: model.login,
             }
         })){
-            await this.waiterRepository.save(model);
+            await this.userRepository.save(model);
         }
     }
 }
