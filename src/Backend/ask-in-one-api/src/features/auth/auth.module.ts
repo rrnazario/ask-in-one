@@ -9,7 +9,7 @@ import { UserModule } from '../user/user.module';
 import { jwtConstants } from './auth.constants';
 import { AuthController } from './auth.controller';
 import { AuthProfile } from './auth.profile';
-import { DoLoginCommandHandler, LocalAuthGuard, LocalStrategy, UserValidator } from './do-login';
+import { DoLoginCommandHandler, JwtStrategy, LocalAuthGuard, LocalStrategy, UserValidator } from './do-login';
 
 const handlers = [
     DoLoginCommandHandler,
@@ -18,6 +18,7 @@ const handlers = [
 const DoLoginProviders = [
     UserValidator,
     LocalStrategy,
+    JwtStrategy,
     LocalAuthGuard,
 ]
 
@@ -31,7 +32,7 @@ const DoLoginProviders = [
             useFactory: (configService: ConfigService) => {
                 return {
                     secret: configService.get('SECRET'),
-                    signOptions: { expiresIn: '180d' },
+                    signOptions: { expiresIn: '7d' },
                 }
             }
         }),
@@ -42,7 +43,6 @@ const DoLoginProviders = [
     providers: [
         ...handlers,
         AuthProfile,
-        //JwtService,
         ...DoLoginProviders
     ],
 })

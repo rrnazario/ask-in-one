@@ -22,7 +22,7 @@ export class DoLoginCommandHandler implements ICommandHandler<DoLoginCommand> {
             return null;
         }
 
-        const payload = { username: user.login, sub: user.id };
+        const payload = { username: user.login, sub: user.id, type: user.userType };
         return {
             access_token: this.jwtService.sign(payload),
         };
