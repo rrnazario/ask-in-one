@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { AuthGuard, PassportStrategy } from "@nestjs/passport";
 import { ExtractJwt, Strategy } from "passport-jwt";
 import { UserType } from "src/entities/user.entity";
-import { jwtConstants } from "src/features/auth/auth.constants";
+import { jwtConstants } from "./validations.constants";
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {}
