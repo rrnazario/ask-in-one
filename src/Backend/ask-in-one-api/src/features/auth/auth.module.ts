@@ -9,7 +9,7 @@ import { UserModule } from '../user/user.module';
 import { AuthController } from './auth.controller';
 import { AuthProfile } from './auth.profile';
 import { DoLoginCommandHandler, JwtStrategy } from './do-login';
-import { UserValidator, LocalStrategy, LocalAuthGuard } from './validations';
+import { UserValidator, LocalStrategy, LocalAuthGuard } from '../../validations';
 
 const handlers = [
     DoLoginCommandHandler,

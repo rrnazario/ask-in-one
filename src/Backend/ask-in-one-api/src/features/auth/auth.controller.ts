@@ -3,7 +3,7 @@ import { InjectMapper } from '@automapper/nestjs';
 import { Body, Controller, Post, Request, UnauthorizedException, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import { DoLoginCommand, DoLoginRequest } from './do-login';
-import { LocalAuthGuard } from './validations';
+import { LocalAuthGuard } from 'src/validations';
 
 @Controller('auth')
 export class AuthController {
