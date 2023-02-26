@@ -1,18 +1,12 @@
 import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { AuthGuard, PassportStrategy } from "@nestjs/passport";
 import { InjectRepository } from "@nestjs/typeorm";
-import { ExtractJwt } from "passport-jwt";
-import { Strategy as pJwtStrategy } from "passport-jwt";
-import { Strategy as lStrategy} from "passport-local";
+import { Strategy } from "passport-local";
 import { User } from "src/entities/user.entity";
 import { Repository } from "typeorm";
-import { jwtConstants } from "../auth.constants";
 
 @Injectable()
 export class LocalAuthGuard extends AuthGuard('local') {}
-
-@Injectable()
-export class JwtAuthGuard extends AuthGuard('jwt') {}
 
 @Injectable()
 export class UserValidator {
@@ -33,7 +27,7 @@ export class UserValidator {
 }
 
 @Injectable()
-export class LocalStrategy extends PassportStrategy(lStrategy) {
+export class LocalStrategy extends PassportStrategy(Strategy) {
     constructor(private validator: UserValidator) {
         super();
     }
@@ -47,19 +41,4 @@ export class LocalStrategy extends PassportStrategy(lStrategy) {
 
         return user;
     }
-}
-
-@Injectable()
-export class JwtStrategy extends PassportStrategy(pJwtStrategy) {
-  constructor() {
-    super({
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      ignoreExpiration: false,
-      secretOrKey: jwtConstants.secret,
-    });
-  }
-
-  async validate(payload: any) {
-    return { userId: payload.sub, username: payload.username };
-  }
 }
