@@ -8,9 +8,13 @@ export class DoLoginRequest {
     @AutoMap()
     public readonly password: string;
 
-    constructor(username: string, password: string) {
+    @AutoMap()
+    public readonly companyId: number;
+
+    constructor(username: string, password: string, companyid: number) {
         this.username = username;
         this.password = password;
+        this.companyId = companyid;
     }
 }
 

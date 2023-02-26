@@ -1,6 +1,6 @@
 import { Mapper } from '@automapper/core';
 import { InjectMapper } from '@automapper/nestjs';
-import { Body, Controller, Post, Request, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Post, Request, UnauthorizedException, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import { DoLoginCommand, DoLoginRequest, LocalAuthGuard } from './do-login';
 
@@ -15,7 +15,9 @@ export class AuthController {
     async AddAsync(@Body() req: DoLoginRequest)
     : Promise<any> {
         const cmd = this.mapper.map(req, DoLoginRequest, DoLoginCommand);
-
-        return await this.mediator.execute(cmd);
+        
+        const token = await this.mediator.execute(cmd);
+        if (!token) throw new UnauthorizedException();
+        return token;
     }    
 }
