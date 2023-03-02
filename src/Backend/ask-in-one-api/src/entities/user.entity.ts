@@ -36,6 +36,7 @@ export class User extends AggregationRoot {
     })
     companyId: number;
 
+    @AutoMap()
     @Column({
         type: 'int4',
     })

@@ -14,11 +14,15 @@ export class AddUserRequest {
     @AutoMap()
     public readonly password: string;
 
-    constructor(name: string, login: string, password: string, companyId:number) {
+    @AutoMap()
+    public readonly userType: number;
+
+    constructor(name: string, login: string, password: string, companyId:number, userType: number) {
         this.name = name;
         this.login = login;
         this.password = password;
         this.companyId = companyId;
+        this.userType = userType;
     }
 }
 
@@ -43,10 +47,15 @@ export class AddUserCommand {
     @MinLength(6)
     public readonly password: string;
 
-    constructor(name: string, login: string, password: string, companyId: number) {
+    @AutoMap()
+    @IsNotEmpty()
+    public readonly userType: number;
+
+    constructor(name: string, login: string, password: string, companyId: number, userType: number) {
         this.name = name;
         this.login = login;
         this.password = password;
         this.companyId = companyId;
+        this.userType = userType;
     }
 }
