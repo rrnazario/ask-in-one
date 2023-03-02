@@ -2,18 +2,19 @@ import { MapPipe } from '@automapper/nestjs';
 import { Body, Controller, HttpCode, Post, Get, UseGuards, UsePipes, ValidationPipe, HttpStatus, Res } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { UserType } from 'src/entities/user.entity';
-import { JwtAuthGuard, AllowedFor } from '../auth/do-login';
+import { AllowedFor, JwtAuthGuard } from 'src/validations';
 import { GetAllUsersQuery } from './get-all-users';
 import { AddUserCommand, AddUserRequest } from './user-add';
 
 @Controller('user')
+@AllowedFor(UserType.Admin)
+@UseGuards(JwtAuthGuard)
+@UsePipes(ValidationPipe)
 export class UserController {
-    constructor(private readonly commandMediator: CommandBus,
+    constructor(
+        private readonly commandMediator: CommandBus,
         private readonly queryMediator: QueryBus) { }
-
-    @UseGuards(JwtAuthGuard)
-    @AllowedFor(UserType.Admin)
-    @UsePipes(ValidationPipe)
+    
     @Post()
     @HttpCode(HttpStatus.CREATED)
     async AddAsync(@Body(MapPipe(AddUserRequest, AddUserCommand)) cmd: AddUserCommand)
@@ -21,7 +22,6 @@ export class UserController {
         this.commandMediator.execute(cmd);
     }
 
-    @AllowedFor(UserType.Admin)
     @Get()
     @HttpCode(HttpStatus.OK)
     @HttpCode(HttpStatus.NO_CONTENT)

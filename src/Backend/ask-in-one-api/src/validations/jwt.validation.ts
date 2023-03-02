@@ -3,7 +3,7 @@ import { Reflector } from "@nestjs/core";
 import { AuthGuard, PassportStrategy } from "@nestjs/passport";
 import { ExtractJwt, Strategy, VerifiedCallback } from "passport-jwt";
 import { UserType } from "src/entities/user.entity";
-import { jwtConstants } from "./validations.constants";
+import { jwtConstants } from "./validation.constants";
 
 import { SetMetadata } from '@nestjs/common';
 

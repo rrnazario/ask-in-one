@@ -1,6 +1,6 @@
 import { Mapper } from '@automapper/core';
 import { InjectMapper } from '@automapper/nestjs';
-import { Body, Controller, Post, Request, UnauthorizedException, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Post, UnauthorizedException, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import { DoLoginCommand, DoLoginRequest } from './do-login';
 import { LocalAuthGuard } from 'src/validations';

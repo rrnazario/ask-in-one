@@ -1,25 +1,15 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { CqrsModule } from '@nestjs/cqrs';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from 'src/entities/user.entity';
-import { ValidationModule } from 'src/validations';
-import { UserModule } from '../user/user.module';
-import { AuthController } from './auth.controller';
-import { AuthProfile } from './auth.profile';
-import { DoLoginCommandHandler } from './do-login';
-
-
-const handlers = [
-    DoLoginCommandHandler,
-]
+import { UserModule } from 'src/features/user/user.module';
+import { LocalStrategy, JwtStrategy, UserValidator } from 'src/validations';
 
 @Module({
     imports: [
         TypeOrmModule.forFeature([User]),
-        CqrsModule,
         JwtModule.registerAsync({
             imports: [ConfigModule],
             inject: [ConfigService],
@@ -31,13 +21,12 @@ const handlers = [
             }
         }),
         PassportModule,
-        UserModule,
-        ValidationModule
+        UserModule
     ],
-    controllers: [AuthController],
     providers: [
-        ...handlers,
-        AuthProfile
+        LocalStrategy,
+        JwtStrategy,
+        UserValidator
     ],
 })
-export class AuthModule { }
+export class ValidationModule { }

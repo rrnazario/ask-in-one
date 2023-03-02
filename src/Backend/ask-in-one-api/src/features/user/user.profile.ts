@@ -1,5 +1,5 @@
 import { AutomapperProfile, InjectMapper } from '@automapper/nestjs';
-import { createMap, Mapper, forMember, mapFrom, fromValue } from '@automapper/core';
+import { createMap, Mapper, forMember, mapFrom } from '@automapper/core';
 import { Injectable } from '@nestjs/common';
 import { AddUserCommand, AddUserRequest } from './user-add';
 import { User, UserType } from 'src/entities/user.entity';
