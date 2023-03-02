@@ -4,9 +4,10 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Strategy } from "passport-local";
 import { User } from "src/entities/user.entity";
 import { Repository } from "typeorm";
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
-export class LocalAuthGuard extends AuthGuard('local') {}
+export class LocalAuthGuard extends AuthGuard('local') { }
 
 @Injectable()
 export class UserValidator {
@@ -17,9 +18,10 @@ export class UserValidator {
 
     async validate(username: string, password: string): Promise<any> {
         const user = await this.userRepository.findOneBy({ login: username });
-
-        if (user && user.password === password) {
-           return user;
+        const match = await bcrypt.compare(password, user.password);
+        
+        if (user && match) {
+            return user;
         }
 
         return null;
@@ -32,8 +34,8 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
         super();
     }
 
-    async validate(username: string, password: string): Promise<any> {        
-        const user = await this.validator.validate(username,password);
+    async validate(username: string, password: string): Promise<any> {
+        const user = await this.validator.validate(username, password);
 
         if (!user) {
             throw new UnauthorizedException();
