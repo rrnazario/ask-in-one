@@ -1,15 +1,38 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { Provider } from 'react-redux';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import Login from './features/login/login.page';
 import './index.css';
-import App from './App';
+import { store } from './redux-ts';
 import reportWebVitals from './reportWebVitals';
+import ErrorPage from './routes/error.page';
+import { ProtectedRoute } from './routes/protected.route';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
+const router = createBrowserRouter([
+  // {
+  //   path: "/",
+  //   element: (<ProtectedRoute> <MainSearch /> </ProtectedRoute>),
+  // },  
+  {
+    path: "/login",
+    element: <Login />,
+  },
+  {
+    path: '*',
+    element: <ErrorPage />
+  }
+]);
+
 root.render(
   <React.StrictMode>
-    <App />
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
   </React.StrictMode>
 );
 
