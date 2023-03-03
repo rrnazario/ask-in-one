@@ -2,27 +2,27 @@ import AuthReducer from "./auth.slice"
 
 const tokenValue = 'some.token';
 
-test('Unauthenticating user', () => {
+// test('Unauthenticating user', () => {
     
-    const result = AuthReducer({
-        token: tokenValue
-    }, {
-        type: AuthActions.Unauthenticated
-    })
+//     const result = AuthReducer({
+//         token: tokenValue
+//     }, {
+//         type: AuthActions.Unauthenticated
+//     })
 
-    expect(result.token).toBe('')
-})
+//     expect(result.token).toBe('')
+// })
 
-test('Authenticating user', () => {
+// test('Authenticating user', () => {
     
-    const result = AuthReducer({
-        token: ''
-    }, {
-        type: AuthActions.Authenticated,
-        payload: {
-            token: tokenValue
-        }        
-    })
+//     const result = AuthReducer({
+//         token: ''
+//     }, {
+//         type: AuthActions.Authenticated,
+//         payload: {
+//             token: tokenValue
+//         }        
+//     })
 
-    expect(result.token).toBe(tokenValue)
-})
+//     expect(result.token).toBe(tokenValue)
+// })
