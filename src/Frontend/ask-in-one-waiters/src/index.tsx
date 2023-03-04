@@ -8,6 +8,8 @@ import { store } from './redux-ts';
 import reportWebVitals from './reportWebVitals';
 import ErrorPage from './routes/error.page';
 import { ProtectedRoute } from './routes/protected.route';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -32,6 +34,9 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
       <RouterProvider router={router} />
+      <ToastContainer 
+        pauseOnFocusLoss={false}
+      />
     </Provider>
   </React.StrictMode>
 );
