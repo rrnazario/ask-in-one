@@ -9,19 +9,22 @@ export class DoLoginRequest {
     public readonly password: string;
 
     @AutoMap()
+    public readonly company: string;
+
+    @AutoMap()
     public readonly companyId: number;
 
-    constructor(username: string, password: string, companyid: number) {
+    constructor(username: string, password: string, companyid: number, company: string) {
         this.username = username;
         this.password = password;
         this.companyId = companyid;
+        this.company = company;
     }
 }
 
 export class DoLoginCommand {
 
     @AutoMap()
-    @IsNotEmpty()
     public readonly companyId: number;
 
     @AutoMap()
@@ -34,8 +37,12 @@ export class DoLoginCommand {
     @MinLength(6)
     public readonly password: string;
 
-    constructor(username: string, password: string, companyId: number) {
+    @AutoMap()
+    public readonly company: string;
+
+    constructor(username: string, password: string, companyId: number, company: string) {
         this.companyId = companyId;
+        this.company = company;
         this.username = username;
         this.password = password;
     }

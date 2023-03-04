@@ -1,16 +1,69 @@
+import React, { useEffect, useState } from 'react';
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { AppDispatch, selectToken, unauthenticate } from '../../redux-ts';
 import { useAppDispatch, useAppSelector } from '../../redux-ts/hooks';
 import { API_URL } from '../configuration/env';
 
+export function HttpClientFunc(){
+    const token = useAppSelector(selectToken);
+    const dispatch = useAppDispatch();
+
+    useEffect(() => init(), []);  
+    
+    const init = () => {
+        axios.interceptors.response.use(
+            (response: any) => response,
+            (errorObj: any) => {
+                if (errorObj && errorObj.response && errorObj.response.status === 401) {
+                    dispatch(unauthenticate())
+                    
+                    localStorage.removeItem('token');
+                    window.location.reload();
+                }
+
+                return errorObj
+            });
+    }
+
+    const getDefaultOptions = (): any => {
+        return {
+            headers: {
+                Authorization: token ? `Bearer ${token}` : '',
+                'Content-Type': 'application/json',
+            },
+            baseURL: API_URL,
+            timeout: 30000
+        }
+    }
+
+    return {
+        async get(url: string, options: AxiosRequestConfig<any> = {}): Promise<AxiosResponse<any, any>> {
+            return await axios.get(url, { ...getDefaultOptions(), ...options })
+        },
+    
+        async post(url: string, data: any, options: AxiosRequestConfig<any> = {}): Promise<AxiosResponse<any, any>> {
+            return await axios.post(url, data, { ...getDefaultOptions(), ...options });
+        },
+    
+        async patch(url: string, data: any, options: AxiosRequestConfig<any> = {}): Promise<AxiosResponse<any, any>> {
+            return await axios.patch(url, data, { ...getDefaultOptions(), ...options });
+        },
+    
+        async put(url: string, data: any, options: AxiosRequestConfig<any> = {}): Promise<AxiosResponse<any, any>> {
+            return await axios.put(url, data, { ...getDefaultOptions(), ...options });
+        },
+    
+        async delete(url: string, options: AxiosRequestConfig<any> = {}): Promise<AxiosResponse<any, any>> {
+            return axios.delete(url, { ...getDefaultOptions(), ...options });
+        }
+    }
+}
+
 export class HttpClient {
-    private token: string | null;
-    private dispatch: AppDispatch;
+    private token: string = useAppSelector(selectToken);
+    private dispatch: AppDispatch = useAppDispatch();
 
     constructor() {
-        this.dispatch = useAppDispatch();
-        this.token = useAppSelector(selectToken);
-
         axios.interceptors.response.use(
             (response: any) => response,
             (errorObj: any) => {

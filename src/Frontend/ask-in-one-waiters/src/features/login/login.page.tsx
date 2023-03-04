@@ -12,22 +12,45 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { blue } from '@mui/material/colors';
 import { toast } from 'react-toastify';
+import LoginService, { DoLoginRequest } from './login.service';
 
 const theme = createTheme();
 
 export default function Login() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+
+  const loginService = new LoginService();
+  
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const values = {
-      email: data.get('email'),
-      password: data.get('password'),
+    const formData = new FormData(event.currentTarget);
+    
+    const values : DoLoginRequest = {
+      username: String(formData.get('email')),
+      password: String(formData.get('password')),
+      company: String(formData.get('company'))
     };
 
-    if (!values.email){
-        toast.error('E-mail inválido')
-    }
+    if (!isValid(values)) return;
+
+   const { data } = await loginService.doLogin(values);
+   if (data){
+    
+   }
   };
+
+  const isValid = (info: DoLoginRequest) : boolean => {
+    if (!info.username){
+        toast.error('E-mail inválido.');
+        return false;
+    }
+
+    if (!info.password){
+        toast.error('É necessário informar uma senha.')
+        return false;
+    }
+    
+    return true;
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -48,6 +71,15 @@ export default function Login() {
             Login
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="company"
+              label="Empresa"
+              name="company"
+              autoFocus
+            />
             <TextField
               margin="normal"
               required
@@ -68,10 +100,10 @@ export default function Login() {
               id="password"
               autoComplete="current-password"
             />
-            <FormControlLabel
+            {/* <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Lembrar de mim"
-            />
+            /> */}
             <Button
               type="submit"
               fullWidth
