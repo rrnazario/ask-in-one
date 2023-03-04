@@ -18,10 +18,10 @@ export class UserValidator {
 
     async validate(username: string, password: string): Promise<any> {
         const user = await this.userRepository.findOneBy({ login: username });
-        const match = await bcrypt.compare(password, user.password);
-        
-        if (user && match) {
-            return user;
+        if (user) {
+            const match = await bcrypt.compare(password, user.password);
+            if (match)
+                return user;
         }
 
         return null;

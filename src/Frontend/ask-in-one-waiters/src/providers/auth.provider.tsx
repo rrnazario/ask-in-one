@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react'
-import { authenticate, store, unauthenticate } from '../redux-ts';
+import { authenticate, unauthenticate } from '../redux-ts';
 import { useAppDispatch } from '../redux-ts/hooks';
 
 interface AuthProviderProps {
@@ -16,8 +16,8 @@ interface providerValue {
 const defaultProviderValue : providerValue = {
         getToken: () => '',
         isAuthenticated: () => false,
-        onLogin: (_:string) => console.log(''),
-        onLogout: () => console.log('')
+        onLogin: (_:string) => console.log('default login'),
+        onLogout: () => console.log('default logout')
 }
 
 export const AuthContext = React.createContext<providerValue>(defaultProviderValue);
