@@ -4,6 +4,7 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { Company } from 'src/entities/company.entity';
 import { User } from 'src/entities/user.entity';
 import { ValidationModule } from 'src/validations';
 import { UserModule } from '../user/user.module';
@@ -18,7 +19,7 @@ const handlers = [
 
 @Module({
     imports: [
-        TypeOrmModule.forFeature([User]),
+        TypeOrmModule.forFeature([User, Company,]),
         CqrsModule,
         JwtModule.registerAsync({
             imports: [ConfigModule],
