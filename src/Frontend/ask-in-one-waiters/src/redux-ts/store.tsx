@@ -1,6 +1,7 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import { LogMiddleware } from './middlewares/log.middleware';
 import { AuthSlice } from './slices/auth.slice';
+import { NavigationSlice } from './slices/navigation.slice';
 
 export interface AuthAction {
     type: string,
@@ -14,7 +15,8 @@ export type RootType = {
 }
 
 const rootReducer = combineReducers({
-    auth: AuthSlice.reducer
+    auth: AuthSlice.reducer,
+    navigate: NavigationSlice.reducer
 })
 
 export const store = configureStore({ 
