@@ -22,7 +22,9 @@ export default function Footer() {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
 
-    useEffect(() => { InternalDoNavigation(value) }, []);
+    useEffect(() => { InternalDoNavigation(value) }, 
+    // eslint-disable-next-line
+    []);
 
     const DoNavigation = async (_: React.SyntheticEvent, newValue: number) => {
         await InternalDoNavigation(newValue);

@@ -1,6 +1,6 @@
 import { Avatar, Card, CardActions, CardContent, Collapse, Fab, IconButton, IconButtonProps, Paper, styled, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
 import { brown, green, grey } from "@mui/material/colors";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Footer from "../../components/footer/footer.component";
 import AskTitle from "../../components/title/asktitle.component";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -74,7 +74,7 @@ function SaloonTable(props: TableProps) {
         setExpanded(!expanded);
     };
 
-    return <div style={{ paddingLeft: 10 }}>
+    return <div style={{ paddingLeft: 10, width: 345 }}>
         <Avatar sx={{ bgcolor: color, top: 30, left: 10, width: 60, height: 60 }} variant="rounded">
             {props.id}
         </Avatar>
@@ -133,14 +133,15 @@ export function Saloon() {
         },
     ]);
 
-    useEffect(() => { }, []);
-
     return <>
         <AskTitle text="Mesas" />
         <div style={{
-            alignItems: 'center'
+            display: 'flex',
+            width: '100%',
+            alignItems: 'center',
+            flexWrap: 'wrap'
         }}>
-            {tables && tables.map((table, index) => <SaloonTable id={table.id} items={table.items} />)}
+            {tables && tables.map((table, index) => <SaloonTable key={index} id={table.id} items={table.items} />)}
         </div>
 
         <Fab size="medium" color="primary" aria-label="add" sx={{
