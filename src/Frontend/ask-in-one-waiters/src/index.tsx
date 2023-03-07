@@ -12,6 +12,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 import { Saloon } from './features/saloon';
 import { AuthProvider } from './providers/auth.provider';
+import { KitchenPanel } from './features/kitchen/kitchen-panel.page';
+import { Configurations } from './features/configs/config.page';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -21,6 +23,14 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: (<ProtectedRoute> <Saloon /> </ProtectedRoute>),
+  },
+  {
+    path: "/kitchen",
+    element: (<ProtectedRoute> <KitchenPanel /> </ProtectedRoute>),
+  },
+  {
+    path: "/config",
+    element: (<ProtectedRoute> <Configurations /> </ProtectedRoute>),
   },
   {
     path: "/login",
