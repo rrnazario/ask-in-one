@@ -10,7 +10,7 @@ import ErrorPage from './routes/error.page';
 import { ProtectedRoute } from './routes/protected.route';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
-import { Dashboard } from './features/dashboard';
+import { Saloon } from './features/saloon';
 import { AuthProvider } from './providers/auth.provider';
 
 const root = ReactDOM.createRoot(
@@ -20,7 +20,7 @@ const root = ReactDOM.createRoot(
 const router = createBrowserRouter([
   {
     path: "/",
-    element: (<ProtectedRoute> <Dashboard /> </ProtectedRoute>),
+    element: (<ProtectedRoute> <Saloon /> </ProtectedRoute>),
   },
   {
     path: "/login",
@@ -39,6 +39,7 @@ root.render(
         <RouterProvider router={router} />
         <ToastContainer
           pauseOnFocusLoss={false}
+          hideProgressBar
         />
       </AuthProvider>
     </Provider>
