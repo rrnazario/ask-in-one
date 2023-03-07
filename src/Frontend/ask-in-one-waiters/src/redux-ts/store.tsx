@@ -3,17 +3,6 @@ import { LogMiddleware } from './middlewares/log.middleware';
 import { AuthSlice } from './slices/auth.slice';
 import { NavigationSlice } from './slices/navigation.slice';
 
-export interface AuthAction {
-    type: string,
-    payload?: {
-        token: string
-    }
-}
-
-export type RootType = {
-    token: string
-}
-
 const rootReducer = combineReducers({
     auth: AuthSlice.reducer,
     navigate: NavigationSlice.reducer
