@@ -14,7 +14,7 @@ import { LocalStrategy, JwtStrategy, UserValidator } from 'src/validations';
         JwtModule.registerAsync({
             imports: [ConfigModule],
             inject: [ConfigService],
-            useFactory: (configService: ConfigService) => {
+            useFactory: async (configService: ConfigService) => {
                 return {
                     secret: configService.get('SECRET'),
                     signOptions: { expiresIn: '7d' },

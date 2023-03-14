@@ -6,6 +6,7 @@ import { UserType } from "src/entities/user.entity";
 import { jwtConstants } from "./validation.constants";
 
 import { SetMetadata } from '@nestjs/common';
+import { ConfigService } from "@nestjs/config";
 
 export const AllowedFor = (...roles: UserType[]) => SetMetadata('roles', roles);
 
@@ -31,23 +32,17 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor(private reflector: Reflector) {
+  constructor(configService: ConfigService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: jwtConstants.secret,
+      secretOrKey: configService.get<string>('SECRET'),
       passReqToCallback: true
     });
   }
 
   async validate(req: Request, payload: any) {
     const info = { userId: payload.sub, username: payload.username, type: payload.type as UserType }
-
-    // const roles = this.reflector.get<UserType[]>('roles', context.getHandler());
-    // if (!roles) {
-    //   return true;
-    // }
-
 
     return info;
   }
