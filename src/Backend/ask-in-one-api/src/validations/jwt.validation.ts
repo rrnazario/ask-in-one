@@ -1,9 +1,8 @@
-import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from "@nestjs/common";
+import { ExecutionContext, Injectable, UnauthorizedException } from "@nestjs/common";
 import { Reflector } from "@nestjs/core";
 import { AuthGuard, PassportStrategy } from "@nestjs/passport";
-import { ExtractJwt, Strategy, VerifiedCallback } from "passport-jwt";
+import { ExtractJwt, Strategy } from "passport-jwt";
 import { UserType } from "src/entities/user.entity";
-import { jwtConstants } from "./validation.constants";
 
 import { SetMetadata } from '@nestjs/common';
 import { ConfigService } from "@nestjs/config";
