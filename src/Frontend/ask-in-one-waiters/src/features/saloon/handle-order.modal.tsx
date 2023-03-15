@@ -1,6 +1,18 @@
-import { Dialog, DialogTitle, DialogContent, Grid, TextField, DialogActions, Button } from "@mui/material";
+import { Dialog, DialogTitle, DialogContent, Grid, TextField, DialogActions, Button, Paper } from "@mui/material";
 import { useState } from "react";
 import { OrderItem } from "./orders";
+import Draggable from 'react-draggable'
+
+function PaperComponent(props: any) {
+    return (
+        <Draggable
+            handle={`#${props.handleArea ?? "draggable-dialog-title"}`}
+            cancel={'[class*="MuiDialogContent-root"]'}
+        >
+            <Paper {...props} />
+        </Draggable>
+    );
+}
 
 interface HandleOrderDialogProps {
     item: OrderItem
@@ -20,7 +32,14 @@ export function HandleOrderDialog({ item, onClose, onSave }: HandleOrderDialogPr
     }
 
     return <>
-        <Dialog open onClose={onClose} maxWidth={'xl'} fullWidth>
+        <Dialog
+            open
+            onClose={onClose}
+            maxWidth={'xl'}
+            fullWidth
+            PaperComponent={PaperComponent}
+            aria-labelledby="draggable-dialog-title">
+
             <DialogTitle>{'Item da Mesa'}</DialogTitle>
             <DialogContent>
                 <Grid container spacing={3}>
@@ -30,8 +49,8 @@ export function HandleOrderDialog({ item, onClose, onSave }: HandleOrderDialogPr
                             margin="dense"
                             id="name"
                             label="Produto"
-                            type="text"             
-                            variant="standard"               
+                            type="text"
+                            variant="standard"
                             value={currentItem.name}
                             onChange={async (c) => await setCurrentItem({ ...currentItem, name: c.target.value })}
                         />

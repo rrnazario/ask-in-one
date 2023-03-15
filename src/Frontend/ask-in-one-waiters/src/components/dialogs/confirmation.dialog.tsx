@@ -1,4 +1,16 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Paper } from "@mui/material";
+import Draggable from 'react-draggable'
+
+function PaperComponent(props: any) {
+  return (
+    <Draggable
+      handle={`#${props.handleArea ?? "draggable-dialog-title"}`}
+      cancel={'[class*="MuiDialogContent-root"]'}
+    >
+      <Paper {...props} />
+    </Draggable>
+  );
+}
 
 export interface ConfirmationDialogProps<T> {
     item: T;
@@ -18,6 +30,8 @@ export function ConfirmationDialog<T>(props: ConfirmationDialogProps<T>) {
             sx={{ '& .MuiDialog-paper': { width: '80%', maxHeight: 435 } }}
             maxWidth="xs"
             open={open}
+            PaperComponent={PaperComponent}
+            aria-labelledby="draggable-dialog-title"
         >
             <DialogTitle>{dialogTitle ?? 'Atenção'}</DialogTitle>
             <DialogContent dividers>

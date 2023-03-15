@@ -1,9 +1,22 @@
-import { Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button, Grid, IconButton } from "@mui/material";
+import { Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button, Grid, IconButton, Paper } from "@mui/material";
 import { useState } from "react";
 import { OrderItem, OrdersGrid } from "./orders";
 import { SaloonTableProps } from "./saloon-table";
 import AddIcon from '@mui/icons-material/Add';
 import { HandleOrderDialog } from "./handle-order.modal";
+import Draggable from 'react-draggable'
+
+function PaperComponent(props: any) {
+  return (
+    <Draggable
+      handle={`#${props.handleArea ?? "draggable-dialog-title"}`}
+      cancel={'[class*="MuiDialogContent-root"]'}
+    >
+      <Paper {...props} />
+    </Draggable>
+  );
+}
+
 
 export interface HandleTableModalProps {
   onClose: () => Promise<any>,
@@ -60,7 +73,13 @@ export function HandleTableModal({ item, title, onSave, onClose }: HandleTableMo
   }
 
   return <>
-    <Dialog open onClose={onClose} maxWidth={'xl'} fullWidth>
+    <Dialog 
+      open
+      onClose={onClose}
+      maxWidth={'xl'}
+      fullWidth
+      PaperComponent={PaperComponent}
+      aria-labelledby="draggable-dialog-title">
       <DialogTitle>{title ? title : 'Nova Mesa'}</DialogTitle>
       <DialogContent>
 
