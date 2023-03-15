@@ -1,18 +1,7 @@
-import { Dialog, DialogTitle, DialogContent, Grid, TextField, DialogActions, Button, Paper } from "@mui/material";
+import { Dialog, DialogTitle, DialogContent, Grid, TextField, DialogActions, Button } from "@mui/material";
 import { useState } from "react";
+import { PaperComponent } from "../../components/dialogs/paper-component";
 import { OrderItem } from "./orders";
-import Draggable from 'react-draggable'
-
-function PaperComponent(props: any) {
-    return (
-        <Draggable
-            handle={`#${props.handleArea ?? "draggable-dialog-title"}`}
-            cancel={'[class*="MuiDialogContent-root"]'}
-        >
-            <Paper {...props} />
-        </Draggable>
-    );
-}
 
 interface HandleOrderDialogProps {
     item: OrderItem

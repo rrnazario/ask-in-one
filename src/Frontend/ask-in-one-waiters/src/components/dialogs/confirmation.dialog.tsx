@@ -1,16 +1,5 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Paper } from "@mui/material";
-import Draggable from 'react-draggable'
-
-function PaperComponent(props: any) {
-  return (
-    <Draggable
-      handle={`#${props.handleArea ?? "draggable-dialog-title"}`}
-      cancel={'[class*="MuiDialogContent-root"]'}
-    >
-      <Paper {...props} />
-    </Draggable>
-  );
-}
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
+import { PaperComponent } from "./paper-component";
 
 export interface ConfirmationDialogProps<T> {
     item: T;
