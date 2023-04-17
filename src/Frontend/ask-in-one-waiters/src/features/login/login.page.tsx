@@ -21,12 +21,12 @@ export default function Login() {
   const loginService = new LoginService();
   const auth = React.useContext(AuthContext);
   const navigate = useNavigate();
-  
-    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    
-    const values : DoLoginRequest = {
+
+    const values: DoLoginRequest = {
       username: String(formData.get('email')),
       password: String(formData.get('password')),
       company: String(formData.get('company'))
@@ -34,25 +34,25 @@ export default function Login() {
 
     if (!isValid(values)) return;
 
-   const { data } = await loginService.doLogin(values);
-   if (data){
-    toast.success('Logado com sucesso!');
-    auth.onLogin(data.access_token);
-    navigate('/');
-   }
+    const { data } = await loginService.doLogin(values);
+    if (data) {
+      toast.success('Logado com sucesso!');
+      auth.onLogin(data.access_token);
+      navigate('/');
+    }
   };
 
-  const isValid = (info: DoLoginRequest) : boolean => {
-    if (!info.username){
-        toast.error('E-mail inválido.');
-        return false;
+  const isValid = (info: DoLoginRequest): boolean => {
+    if (!info.username) {
+      toast.error('E-mail inválido.');
+      return false;
     }
 
-    if (!info.password){
-        toast.error('É necessário informar uma senha.')
-        return false;
+    if (!info.password) {
+      toast.error('É necessário informar uma senha.')
+      return false;
     }
-    
+
     return true;
   }
 
@@ -75,7 +75,7 @@ export default function Login() {
             Login
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-          <TextField
+            <TextField
               margin="normal"
               required
               fullWidth
@@ -118,7 +118,7 @@ export default function Login() {
             </Button>
           </Box>
         </Box>
-      </Container>      
+      </Container>
     </ThemeProvider>
   );
 }
