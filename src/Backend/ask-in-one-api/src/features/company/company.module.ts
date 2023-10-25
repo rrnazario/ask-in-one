@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Company, CompanyBranch } from 'src/entities/company.entity';
+import { Company, CompanyBranch } from '../../entities/company.entity';
 import { AddCompanyCommandHandler } from './add-company';
 import { CompanyController } from './company.controller';
 import { CompanyProfile } from './company.profile';

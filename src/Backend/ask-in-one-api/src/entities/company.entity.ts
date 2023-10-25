@@ -25,8 +25,16 @@ export class Company extends AggregationRoot {
     @OneToMany(() => User, (b) => b.company)
     Users: User[];
 
-    UdpateInfo(name: string) {
+    UdpateInfo(name: string) : Company {
         this.name = name;
+
+        return this
+    }
+
+    UpdateId(companyId: number) : Company {
+        this.id = companyId;
+
+        return this
     }
 }
 

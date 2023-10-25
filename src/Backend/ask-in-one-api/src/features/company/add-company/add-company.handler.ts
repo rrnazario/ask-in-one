@@ -2,7 +2,7 @@ import { Mapper } from "@automapper/core";
 import { InjectMapper } from "@automapper/nestjs";
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Company } from "src/entities/company.entity";
+import { Company } from "../../../entities/company.entity";
 import { Repository } from "typeorm";
 import { AddCompanyCommand } from "./add-company.model";
 
@@ -11,7 +11,8 @@ export class AddCompanyCommandHandler implements ICommandHandler<AddCompanyComma
     constructor(
         @InjectRepository(Company)
         private readonly repository: Repository<Company>,
-        @InjectMapper() private readonly mapper: Mapper,
+        @InjectMapper() 
+        private readonly mapper: Mapper,
     ) { }
 
     async execute(cmd: AddCompanyCommand): Promise<any> {
@@ -22,7 +23,7 @@ export class AddCompanyCommandHandler implements ICommandHandler<AddCompanyComma
             company = await this.repository.save(company)
         }
         else {
-            const model = this.mapper.map(cmd, AddCompanyCommand, Company);
+            const model = await this.mapper.mapAsync(cmd, AddCompanyCommand, Company);
             company = await this.repository.save(model);
         }
 

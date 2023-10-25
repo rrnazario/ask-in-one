@@ -1,4 +1,5 @@
 src/Frontend/node_modules
+src/Backend/node_modules
 src/Backend/ask-in-one-api/node_modules
 src/Backend/ask-in-one-api/dist
 src/Backend/ask-in-one-api/.env
