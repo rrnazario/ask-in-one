@@ -28,6 +28,7 @@ export class UserController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
+  @HttpCode(HttpStatus.UNAUTHORIZED)
   async AddAsync(
     @Body(MapPipe(AddUserRequest, AddUserCommand)) cmd: AddUserCommand,
   ): Promise<any> {
@@ -36,6 +37,7 @@ export class UserController {
 
   @Get()
   @HttpCode(HttpStatus.OK)
+  @HttpCode(HttpStatus.UNAUTHORIZED)
   @HttpCode(HttpStatus.NO_CONTENT)
   async GetAllAsync(): Promise<any> {
     const result = this.queryMediator.execute(new GetAllUsersQuery());
