@@ -6,28 +6,33 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Company } from 'src/entities/company.entity';
 import { User } from 'src/entities/user.entity';
 import { UserModule } from 'src/features/user/user.module';
+import jwtConfiguration, { JwtConfig } from 'src/infra/config/jwt.configuration';
 import { LocalStrategy, JwtStrategy, UserValidator } from 'src/validations';
 
 @Module({
     imports: [
+        ConfigModule.forRoot({ load: [jwtConfiguration] }),
         TypeOrmModule.forFeature([User, Company,]),
         JwtModule.registerAsync({
             imports: [ConfigModule],
             inject: [ConfigService],
-            useFactory: async (configService: ConfigService) => {
+            useFactory: (configService: ConfigService) => {
+                const config = configService.get<JwtConfig>(JwtConfig.KEY);
+
                 return {
-                    secret: configService.get('SECRET'),
+                    secret: config.secret,
                     signOptions: { expiresIn: '7d' },
                 }
             }
         }),
         PassportModule,
-        UserModule
+        UserModule,
     ],
     providers: [
         LocalStrategy,
         JwtStrategy,
-        UserValidator
+        UserValidator,
+        ConfigService
     ],
 })
 export class ValidationModule { }

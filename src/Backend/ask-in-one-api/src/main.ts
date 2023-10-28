@@ -1,8 +1,10 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule);  
+  
   app.enableCors({
     origin: [
       'http://localhost:3000',
@@ -10,6 +12,10 @@ async function bootstrap() {
     methods: ["GET", "POST"],
     credentials: true,
   });
-  await app.listen(process.env.PORT || 7777);
+
+  const port = app.get(ConfigService).get<number>('PORT', 7777);
+
+  await app.listen(port);
 }
+
 bootstrap();

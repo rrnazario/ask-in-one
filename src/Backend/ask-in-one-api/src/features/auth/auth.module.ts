@@ -11,6 +11,7 @@ import { UserModule } from '../user/user.module';
 import { AuthController } from './auth.controller';
 import { AuthProfile } from './auth.profile';
 import { DoLoginCommandHandler } from './do-login';
+import jwtConfiguration, { JwtConfig } from 'src/infra/config/jwt.configuration';
 
 
 const handlers = [
@@ -19,14 +20,17 @@ const handlers = [
 
 @Module({
     imports: [
+        ConfigModule.forRoot({ load: [jwtConfiguration] }),
         TypeOrmModule.forFeature([User, Company,]),
         CqrsModule,
         JwtModule.registerAsync({
             imports: [ConfigModule],
             inject: [ConfigService],
             useFactory: (configService: ConfigService) => {
+                const config = configService.get<JwtConfig>(JwtConfig.KEY);
+
                 return {
-                    secret: configService.get('SECRET'),
+                    secret: config.secret,
                     signOptions: { expiresIn: '7d' },
                 }
             }

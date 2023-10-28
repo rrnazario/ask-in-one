@@ -1,11 +1,12 @@
-import { ExecutionContext, Injectable, UnauthorizedException } from "@nestjs/common";
+import { ExecutionContext, Inject, Injectable, UnauthorizedException } from "@nestjs/common";
 import { Reflector } from "@nestjs/core";
 import { AuthGuard, PassportStrategy } from "@nestjs/passport";
 import { ExtractJwt, Strategy } from "passport-jwt";
 import { UserType } from "src/entities/user.entity";
 
 import { SetMetadata } from '@nestjs/common';
-import { ConfigService } from "@nestjs/config";
+import { ConfigType } from "@nestjs/config";
+import jwtConfiguration from "src/infra/config/jwt.configuration";
 
 export const AllowedFor = (...roles: UserType[]) => SetMetadata('roles', roles);
 
@@ -31,11 +32,14 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor(configService: ConfigService) {
+  constructor(
+    @Inject(jwtConfiguration.KEY)
+    private _: ConfigType<typeof jwtConfiguration>
+    ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: configService.get<string>('SECRET'),
+      secretOrKey: _.secret,
       passReqToCallback: true
     });
   }

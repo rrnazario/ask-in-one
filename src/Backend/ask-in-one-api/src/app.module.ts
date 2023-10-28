@@ -7,13 +7,17 @@ import entities from './entities';
 import { AuthModule } from './features/auth/auth.module';
 import { CompanyModule } from './features/company/company.module';
 import { UserModule } from './features/user/user.module';
+import databaseConfiguration, { DbConfig } from './infra/config/database.configuration';
+import jwtConfiguration from './infra/config/jwt.configuration';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
+    ConfigModule.forRoot({
+      load: [databaseConfiguration, jwtConfiguration]
+    }),
     AutomapperModule.forRoot({
       strategyInitializer: classes(),
-  }),
+    }),
     TypeOrmModule.forRootAsync({
       imports: [
         ConfigModule,
@@ -21,19 +25,22 @@ import { UserModule } from './features/user/user.module';
         AuthModule,
         CompanyModule,
       ],
-      useFactory: (configService: ConfigService) => ({
-        type: 'postgres',
-        host: configService.get('DB_HOST'),
-        port: +configService.get<number>('DB_PORT'),
-        username: configService.get('DB_USERNAME'),
-        password: configService.get('DB_PASSWORD'),
-        database: configService.get('DB_NAME'),
-        entities,
-        migrations: ['./migrations/*.ts'],
-        //synchronize: true
-      }),        
+      useFactory: (configService: ConfigService) => {
+        const config = configService.get<DbConfig>(DbConfig.KEY);
+
+        return {
+          type: 'postgres',
+          host: config.host,
+          port: +config.port,
+          username: config.username,
+          password: config.password,
+          database: config.name,
+          entities,
+          migrations: ['./migrations/*.ts'],
+        }
+      },
       inject: [ConfigService],
     })
   ],
 })
-export class AppModule {}
+export class AppModule { }
