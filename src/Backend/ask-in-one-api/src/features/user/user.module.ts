@@ -7,20 +7,11 @@ import { AddUserCommandHandler } from './user-add';
 import { UserController } from './user.controller';
 import { UserProfile } from './user.profile';
 
-const handlers = [
-    AddUserCommandHandler,
-    GetAllUsersQueryHandler,
-]
+const handlers = [AddUserCommandHandler, GetAllUsersQueryHandler];
 
 @Module({
-    imports: [
-        TypeOrmModule.forFeature([User]),
-        CqrsModule,        
-    ],
-    controllers: [UserController],
-    providers: [
-        ...handlers,
-        UserProfile
-    ],
+  imports: [TypeOrmModule.forFeature([User]), CqrsModule],
+  controllers: [UserController],
+  providers: [...handlers, UserProfile],
 })
-export class UserModule { }
+export class UserModule {}

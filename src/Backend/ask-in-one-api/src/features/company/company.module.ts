@@ -6,19 +6,11 @@ import { AddCompanyCommandHandler } from './add-company';
 import { CompanyController } from './company.controller';
 import { CompanyProfile } from './company.profile';
 
-const handlers = [
-    AddCompanyCommandHandler
-]
+const handlers = [AddCompanyCommandHandler];
 
 @Module({
-    imports: [
-        TypeOrmModule.forFeature([Company, CompanyBranch]),
-        CqrsModule,        
-    ],
-    controllers: [CompanyController],
-    providers: [
-        ...handlers,
-        CompanyProfile
-    ],
+  imports: [TypeOrmModule.forFeature([Company, CompanyBranch]), CqrsModule],
+  controllers: [CompanyController],
+  providers: [...handlers, CompanyProfile],
 })
-export class CompanyModule { }
+export class CompanyModule {}

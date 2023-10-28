@@ -1,34 +1,34 @@
-import { Column, Entity, JoinColumn, OneToOne } from "typeorm";
-import { Category } from "./category.entity";
-import { AggregationRoot } from "./seed-work";
+import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
+import { Category } from './category.entity';
+import { AggregationRoot } from './seed-work';
 
 @Entity()
 export class Dish extends AggregationRoot {
-    @Column({
-        nullable: false,
-        default: '',
-    })
-    nome: string;
+  @Column({
+    nullable: false,
+    default: '',
+  })
+  nome: string;
 
-    @Column({
-        type: 'int4',
-        nullable: false,
-    })
-    categoryid: number;
+  @Column({
+    type: 'int4',
+    nullable: false,
+  })
+  categoryid: number;
 
-    @OneToOne(() => Category, {  })
-    @JoinColumn({ name: 'categoryid' })
-    category: Category;
+  @OneToOne(() => Category, {})
+  @JoinColumn({ name: 'categoryid' })
+  category: Category;
 
-    @Column({
-        type: 'float4',
-        nullable: false,
-    })
-    price: number;
+  @Column({
+    type: 'float4',
+    nullable: false,
+  })
+  price: number;
 
-    @Column({
-        type: 'bool',
-        nullable: false,
-    })
-    inStock: boolean;
+  @Column({
+    type: 'bool',
+    nullable: false,
+  })
+  inStock: boolean;
 }

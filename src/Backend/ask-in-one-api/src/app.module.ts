@@ -7,24 +7,21 @@ import entities from './entities';
 import { AuthModule } from './features/auth/auth.module';
 import { CompanyModule } from './features/company/company.module';
 import { UserModule } from './features/user/user.module';
-import databaseConfiguration, { DbConfig } from './infra/config/database.configuration';
+import databaseConfiguration, {
+  DbConfig,
+} from './infra/config/database.configuration';
 import jwtConfiguration from './infra/config/jwt.configuration';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      load: [databaseConfiguration, jwtConfiguration]
+      load: [databaseConfiguration, jwtConfiguration],
     }),
     AutomapperModule.forRoot({
       strategyInitializer: classes(),
     }),
     TypeOrmModule.forRootAsync({
-      imports: [
-        ConfigModule,
-        UserModule,
-        AuthModule,
-        CompanyModule,
-      ],
+      imports: [ConfigModule, UserModule, AuthModule, CompanyModule],
       useFactory: (configService: ConfigService) => {
         const config = configService.get<DbConfig>(DbConfig.KEY);
 
@@ -37,10 +34,10 @@ import jwtConfiguration from './infra/config/jwt.configuration';
           database: config.name,
           entities,
           migrations: ['./migrations/*.ts'],
-        }
+        };
       },
       inject: [ConfigService],
-    })
+    }),
   ],
 })
-export class AppModule { }
+export class AppModule {}

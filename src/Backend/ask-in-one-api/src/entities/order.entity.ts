@@ -1,10 +1,17 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from "typeorm";
-import { Dish } from "./dish.entity";
-import { AggregationRoot, AskEntity } from "./seed-work";
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+} from 'typeorm';
+import { Dish } from './dish.entity';
+import { AggregationRoot, AskEntity } from './seed-work';
 
 @Entity()
 export class Order extends AggregationRoot {
-    /*Pedido
+  /*Pedido
 - NrMesa
 - PedidoItem[]
 - Fechar()
@@ -13,54 +20,53 @@ PedidoItem
 - PratoId
 - Quantidade*/
 
-    @Column({
-        nullable: false,
-        default: '',
-    })
-    tableCode: string;
+  @Column({
+    nullable: false,
+    default: '',
+  })
+  tableCode: string;
 
-    @OneToMany(() => OrderItem, (b) => b.company)
-    Items: OrderItem[];
+  @OneToMany(() => OrderItem, (b) => b.company)
+  Items: OrderItem[];
 
-    @Column({
-        type: 'int4'
-    })
-    status: OrderStatus;
+  @Column({
+    type: 'int4',
+  })
+  status: OrderStatus;
 
-    public Close() {
-        this.status = OrderStatus.Closed
-    }
+  public Close() {
+    this.status = OrderStatus.Closed;
+  }
 }
 
 export enum OrderStatus {
-    Opened,
-    Closed
+  Opened,
+  Closed,
 }
 
 @Entity()
 export class OrderItem extends AskEntity {
+  @ManyToOne(() => Order, (c) => c.Items)
+  @JoinColumn({ name: 'orderId' })
+  company: Order;
 
-    @ManyToOne(() => Order, (c) => c.Items)
-    @JoinColumn({ name: 'orderId' })
-    company: Order;
+  @Column({
+    type: 'int4',
+  })
+  orderId: number;
 
-    @Column({
-        type: 'int4',
-    })
-    orderId: number;
+  @OneToOne(() => Dish, {})
+  @JoinColumn({ name: 'dishId' })
+  dish: Dish;
 
-    @OneToOne(() => Dish, { })
-    @JoinColumn({ name: 'dishId' })
-    dish: Dish;
+  @Column({
+    type: 'int4',
+  })
+  dishId: number;
 
-    @Column({
-        type: 'int4',
-    })
-    dishId: number;
-
-    @Column({
-        type: 'float4',
-        nullable: false,
-    })
-    amount: number;
+  @Column({
+    type: 'float4',
+    nullable: false,
+  })
+  amount: number;
 }

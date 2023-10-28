@@ -1,37 +1,37 @@
-import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
-import { JwtService } from "@nestjs/jwt";
-import { InjectRepository } from "@nestjs/typeorm";
-import { User, UserType } from "src/entities/user.entity";
-import { Repository } from "typeorm";
-import { DoLoginCommand } from "./do-login.model";
+import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
+import { JwtService } from '@nestjs/jwt';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User, UserType } from 'src/entities/user.entity';
+import { Repository } from 'typeorm';
+import { DoLoginCommand } from './do-login.model';
 
 @CommandHandler(DoLoginCommand)
 export class DoLoginCommandHandler implements ICommandHandler<DoLoginCommand> {
-    constructor(
-        @InjectRepository(User)
-        private readonly userRepository: Repository<User>,
-        private jwtService: JwtService,
-    ) { }
+  constructor(
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
+    private jwtService: JwtService,
+  ) {}
 
-    async execute(cmd: DoLoginCommand): Promise<any> {
-        const user = await this.userRepository.findOne({
-            where: { login: cmd.username, companyId: cmd.companyId }
-        });
+  async execute(cmd: DoLoginCommand): Promise<any> {
+    const user = await this.userRepository.findOne({
+      where: { login: cmd.username, companyId: cmd.companyId },
+    });
 
-        if (!user || this.isNotValid(user)){
-            return null;
-        }
-
-        const payload = { username: user.login, sub: user.id, type: user.userType };
-        return {
-            access_token: this.jwtService.sign(payload),
-        };
+    if (!user || this.isNotValid(user)) {
+      return null;
     }
 
-    isNotValid(user: User) : boolean {
-        const hasCompany = user.companyId;
-        const isAdmin = user.userType === UserType.Admin;
+    const payload = { username: user.login, sub: user.id, type: user.userType };
+    return {
+      access_token: this.jwtService.sign(payload),
+    };
+  }
 
-        return !hasCompany && !isAdmin;
-    }
+  isNotValid(user: User): boolean {
+    const hasCompany = user.companyId;
+    const isAdmin = user.userType === UserType.Admin;
+
+    return !hasCompany && !isAdmin;
+  }
 }

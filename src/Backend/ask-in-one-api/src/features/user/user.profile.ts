@@ -7,18 +7,25 @@ import { GetAllUsersResponse } from './get-all-users';
 
 @Injectable()
 export class UserProfile extends AutomapperProfile {
-    constructor(@InjectMapper() mapper: Mapper) {
-        super(mapper);
-    }
+  constructor(@InjectMapper() mapper: Mapper) {
+    super(mapper);
+  }
 
-    override get profile() {
-        return (mapper) => {
-            createMap(mapper, AddUserCommand, User);
-                //forMember((destination) => destination.userType, fromValue(UserType.Waiter)));
+  override get profile() {
+    return (mapper) => {
+      createMap(mapper, AddUserCommand, User);
+      //forMember((destination) => destination.userType, fromValue(UserType.Waiter)));
 
-            createMap(mapper, AddUserRequest, AddUserCommand);            
-            createMap(mapper, User, GetAllUsersResponse, 
-                forMember(d => d.userType, mapFrom(f => UserType[f.userType])));
-        };
-    }
+      createMap(mapper, AddUserRequest, AddUserCommand);
+      createMap(
+        mapper,
+        User,
+        GetAllUsersResponse,
+        forMember(
+          (d) => d.userType,
+          mapFrom((f) => UserType[f.userType]),
+        ),
+      );
+    };
+  }
 }

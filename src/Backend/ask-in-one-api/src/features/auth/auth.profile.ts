@@ -6,14 +6,14 @@ import { User } from 'src/entities/user.entity';
 
 @Injectable()
 export class AuthProfile extends AutomapperProfile {
-    constructor(@InjectMapper() mapper: Mapper) {
-        super(mapper);
-    }
+  constructor(@InjectMapper() mapper: Mapper) {
+    super(mapper);
+  }
 
-    override get profile() {
-        return (mapper) => {
-            createMap(mapper, DoLoginRequest, DoLoginCommand);
-            createMap(mapper, DoLoginCommand, User);
-        };
-    }
+  override get profile() {
+    return (mapper) => {
+      createMap(mapper, DoLoginRequest, DoLoginCommand);
+      createMap(mapper, DoLoginCommand, User);
+    };
+  }
 }

@@ -1,2 +1,2 @@
-export * from './get-all-users.model'
-export * from './get-all-users.handler'
+export * from './get-all-users.model';
+export * from './get-all-users.handler';
