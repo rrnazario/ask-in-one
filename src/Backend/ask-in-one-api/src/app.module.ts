@@ -8,7 +8,7 @@ import { AuthModule } from './features/auth/auth.module';
 import { CompanyModule } from './features/company/company.module';
 import { UserModule } from './features/user/user.module';
 import databaseConfiguration, {
-  DbConfig,
+  DbConfigOptions,
 } from './infra/config/database.configuration';
 import jwtConfiguration from './infra/config/jwt.configuration';
 
@@ -23,7 +23,7 @@ import jwtConfiguration from './infra/config/jwt.configuration';
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule, UserModule, AuthModule, CompanyModule],
       useFactory: (configService: ConfigService) => {
-        const config = configService.get<DbConfig>(DbConfig.KEY);
+        const config = DbConfigOptions.FromService(configService);
 
         return {
           type: 'postgres',

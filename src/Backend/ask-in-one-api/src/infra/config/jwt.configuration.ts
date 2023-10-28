@@ -1,14 +1,18 @@
-import { registerAs } from '@nestjs/config';
+import { ConfigService, registerAs } from '@nestjs/config';
 
-export abstract class JwtConfig {
-  public secret: string;
+export abstract class JwtConfigOptions {
+    public secret: string;
 
-  public static KEY = 'jwt';
+    static KEY = 'jwt';
+
+    static FromService(configService: ConfigService): JwtConfigOptions {
+        return configService.get<JwtConfigOptions>(JwtConfigOptions.KEY)
+    }
 }
 
 export default registerAs(
-  JwtConfig.KEY,
-  (): JwtConfig => ({
-    secret: process.env.SECRET,
-  }),
+    JwtConfigOptions.KEY,
+    (): JwtConfigOptions => ({
+        secret: process.env.SECRET,
+    }),
 );

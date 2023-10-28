@@ -12,7 +12,7 @@ import { AuthController } from './auth.controller';
 import { AuthProfile } from './auth.profile';
 import { DoLoginCommandHandler } from './do-login';
 import jwtConfiguration, {
-  JwtConfig,
+  JwtConfigOptions,
 } from 'src/infra/config/jwt.configuration';
 
 const handlers = [DoLoginCommandHandler];
@@ -26,7 +26,7 @@ const handlers = [DoLoginCommandHandler];
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => {
-        const config = configService.get<JwtConfig>(JwtConfig.KEY);
+        const config = JwtConfigOptions.FromService(configService);
 
         return {
           secret: config.secret,
