@@ -19,9 +19,7 @@ import { DatabaseConfiguration, JwtConfiguration } from './infra/config';
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule, UserModule, AuthModule, CompanyModule],
-      useFactory: (configService: ConfigService) => {
-        return DatabaseConfiguration.ConfigDatabase(configService, entities);
-      },
+      useFactory: (configService: ConfigService) => DatabaseConfiguration.ConfigDatabase(configService, entities),
       inject: [ConfigService],
     }),
   ],

@@ -1,19 +1,19 @@
 import { ConfigService, registerAs } from '@nestjs/config';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
-import { IBaseConfiguration } from './base.configuration';
+import { IBaseConfiguration, IBaseOptions, fromService } from './base.configuration';
 
-export abstract class DbConfigOptions {
+export abstract class DbConfigOptions implements IBaseOptions {
     public host: string;
     public port: number;
     public name: string;
     public username: string;
     public password: string;
-
-    static KEY = 'database';
 }
 
+const PROPERTY_PATH = 'database';
+
 const factory = registerAs(
-    DbConfigOptions.KEY,
+    PROPERTY_PATH,
     (): DbConfigOptions => ({
         name: process.env.DB_NAME,
         host: process.env.DB_HOST,
@@ -23,8 +23,6 @@ const factory = registerAs(
     }),
 );
 
-const fromService = (configService: ConfigService): DbConfigOptions => configService.get<DbConfigOptions>(DbConfigOptions.KEY);
-
 interface IDatabaseConfiguration extends IBaseConfiguration<DbConfigOptions> {
     ConfigDatabase(configService: ConfigService, entities: any[]): TypeOrmModuleOptions;
 }
@@ -32,9 +30,9 @@ interface IDatabaseConfiguration extends IBaseConfiguration<DbConfigOptions> {
 export const DatabaseConfiguration: IDatabaseConfiguration =
 {
     Factory: factory,
-    FromService: fromService,
+    FromService: (config: ConfigService) => fromService<DbConfigOptions>(PROPERTY_PATH, config),
     ConfigDatabase: (configService: ConfigService, entities: any[]) => {
-        const config = fromService(configService);
+        const config = fromService<DbConfigOptions>(PROPERTY_PATH, configService);
 
         return {
             type: 'postgres',

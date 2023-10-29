@@ -1,16 +1,16 @@
 import { ConfigService, registerAs } from '@nestjs/config';
-import { IBaseConfiguration } from './base.configuration';
+import { IBaseOptions, IBaseConfiguration, fromService } from './base.configuration';
 
-export abstract class JwtConfigOptions {
+export abstract class JwtConfigOptions implements IBaseOptions {
     public secret: string;
-
-    static KEY = 'jwt';
 }
+
+const PROPERTY_PATH = 'jwt';
 
 interface IJwtConfiguration extends IBaseConfiguration<JwtConfigOptions> { }
 
 const factory = registerAs(
-    JwtConfigOptions.KEY,
+    PROPERTY_PATH,
     (): JwtConfigOptions => ({
         secret: process.env.SECRET,
     }),
@@ -19,5 +19,5 @@ const factory = registerAs(
 export const JwtConfiguration: IJwtConfiguration =
 {
     Factory: factory,
-    FromService: (configService: ConfigService): JwtConfigOptions => configService.get<JwtConfigOptions>(JwtConfigOptions.KEY),   
+    FromService: (config: ConfigService) => fromService<JwtConfigOptions>(PROPERTY_PATH, config),
 }
