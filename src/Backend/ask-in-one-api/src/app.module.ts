@@ -7,12 +7,12 @@ import entities from './entities';
 import { AuthModule } from './features/auth/auth.module';
 import { CompanyModule } from './features/company/company.module';
 import { UserModule } from './features/user/user.module';
-import { DbConfig, DbConfigFactory, JwtConfigFactory } from './infra/config';
+import { DatabaseConfiguration, JwtConfiguration } from './infra/config';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      load: [DbConfigFactory, JwtConfigFactory],
+      load: [DatabaseConfiguration.Factory, JwtConfiguration.Factory],
     }),
     AutomapperModule.forRoot({
       strategyInitializer: classes(),
@@ -20,7 +20,7 @@ import { DbConfig, DbConfigFactory, JwtConfigFactory } from './infra/config';
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule, UserModule, AuthModule, CompanyModule],
       useFactory: (configService: ConfigService) => {
-        return DbConfig.ConfigDatabase(configService, entities);
+        return DatabaseConfiguration.ConfigDatabase(configService, entities);
       },
       inject: [ConfigService],
     }),

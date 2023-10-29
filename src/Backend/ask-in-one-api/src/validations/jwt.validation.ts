@@ -11,7 +11,7 @@ import { UserType } from 'src/entities/user.entity';
 
 import { SetMetadata } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
-import { JwtConfigFactory } from 'src/infra/config';
+import { JwtConfiguration } from 'src/infra/config';
 
 export const AllowedFor = (...roles: UserType[]) => SetMetadata('roles', roles);
 
@@ -43,8 +43,8 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
-    @Inject(JwtConfigFactory.KEY)
-    private _: ConfigType<typeof JwtConfigFactory>,
+    @Inject(JwtConfiguration.Factory.KEY)
+    private _: ConfigType<typeof JwtConfiguration.Factory>,
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
