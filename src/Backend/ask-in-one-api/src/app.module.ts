@@ -7,15 +7,12 @@ import entities from './entities';
 import { AuthModule } from './features/auth/auth.module';
 import { CompanyModule } from './features/company/company.module';
 import { UserModule } from './features/user/user.module';
-import databaseConfiguration, {
-  DbConfigOptions,
-} from './infra/config/database.configuration';
-import jwtConfiguration from './infra/config/jwt.configuration';
+import { DbConfig, DbConfigOptions, JwtConfig } from './infra/config';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      load: [databaseConfiguration, jwtConfiguration],
+      load: [DbConfig, JwtConfig],
     }),
     AutomapperModule.forRoot({
       strategyInitializer: classes(),
@@ -23,18 +20,7 @@ import jwtConfiguration from './infra/config/jwt.configuration';
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule, UserModule, AuthModule, CompanyModule],
       useFactory: (configService: ConfigService) => {
-        const config = DbConfigOptions.FromService(configService);
-
-        return {
-          type: 'postgres',
-          host: config.host,
-          port: +config.port,
-          username: config.username,
-          password: config.password,
-          database: config.name,
-          entities,
-          migrations: ['./migrations/*.ts'],
-        };
+        return DbConfigOptions.ConfigDatabase(configService, entities);
       },
       inject: [ConfigService],
     }),

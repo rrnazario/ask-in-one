@@ -10,7 +10,7 @@ export abstract class JwtConfigOptions {
     }
 }
 
-export default registerAs(
+export const JwtConfig = registerAs(
     JwtConfigOptions.KEY,
     (): JwtConfigOptions => ({
         secret: process.env.SECRET,
