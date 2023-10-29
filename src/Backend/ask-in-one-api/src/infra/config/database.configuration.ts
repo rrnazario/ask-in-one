@@ -10,15 +10,13 @@ export abstract class DbConfigOptions implements IBaseOptions {
     public password: string;
 }
 
-const PROPERTY_PATH = 'database';
-
-interface IDatabaseConfiguration extends IBaseConfiguration<DbConfigOptions> {
+interface IDatabaseConfiguration {
     ConfigDatabase(configService: ConfigService, entities: any[]): TypeOrmModuleOptions;
 }
 
 class CDatabaseConfiguration extends BaseConfiguration<DbConfigOptions> implements IDatabaseConfiguration {
     constructor() {
-        super(PROPERTY_PATH);
+        super('database');
     }
 
     ConfigDatabase(configService: ConfigService, entities: any[]): TypeOrmModuleOptions {

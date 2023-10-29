@@ -5,11 +5,9 @@ export abstract class JwtConfigOptions implements IBaseOptions {
     public secret: string;
 }
 
-const PROPERTY_PATH = 'jwt';
-
 class CJwtConfiguration extends BaseConfiguration<JwtConfigOptions> {
     constructor() {
-        super(PROPERTY_PATH);
+        super('jwt');
     }
     
     Factory = registerAs(
