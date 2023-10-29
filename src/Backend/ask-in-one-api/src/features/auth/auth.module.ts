@@ -11,20 +11,20 @@ import { UserModule } from '../user/user.module';
 import { AuthController } from './auth.controller';
 import { AuthProfile } from './auth.profile';
 import { DoLoginCommandHandler } from './do-login';
-import { JwtConfigOptions, JwtConfig } from 'src/infra/config/jwt.configuration';
+import { JwtConfig, JwtConfigFactory } from 'src/infra/config/jwt.configuration';
 
 const handlers = [DoLoginCommandHandler];
 
 @Module({
     imports: [
-        ConfigModule.forRoot({ load: [JwtConfig] }),
+        ConfigModule.forRoot({ load: [JwtConfigFactory] }),
         TypeOrmModule.forFeature([User, Company]),
         CqrsModule,
         JwtModule.registerAsync({
             imports: [ConfigModule],
             inject: [ConfigService],
             useFactory: (configService: ConfigService) => {
-                const config = JwtConfigOptions.FromService(configService);
+                const config = JwtConfig.FromService(configService);
 
                 return {
                     secret: config.secret,

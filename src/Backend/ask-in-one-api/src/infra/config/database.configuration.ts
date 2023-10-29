@@ -1,7 +1,7 @@
 import { ConfigService, registerAs } from '@nestjs/config';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 
-export abstract class DbConfigOptions {
+export abstract class DbConfig {
     public host: string;
     public port: number;
     public name: string;
@@ -10,12 +10,12 @@ export abstract class DbConfigOptions {
 
     public static KEY = 'database';
 
-    static FromService(configService: ConfigService): DbConfigOptions {
-        return configService.get<DbConfigOptions>(DbConfigOptions.KEY)
+    static FromService(configService: ConfigService): DbConfig {
+        return configService.get<DbConfig>(DbConfig.KEY)
     }
 
     static ConfigDatabase = (configService: ConfigService, entities: any[]): TypeOrmModuleOptions => {
-        const config: DbConfigOptions = this.FromService(configService);
+        const config = this.FromService(configService);
 
         return {
             type: 'postgres',
@@ -30,9 +30,9 @@ export abstract class DbConfigOptions {
     }
 }
 
-export const DbConfig = registerAs(
-    DbConfigOptions.KEY,
-    (): DbConfigOptions => ({
+export const DbConfigFactory = registerAs(
+    DbConfig.KEY,
+    (): DbConfig => ({
         name: process.env.DB_NAME,
         host: process.env.DB_HOST,
         port: parseInt(process.env.DB_PORT) ?? 7777,

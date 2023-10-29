@@ -6,18 +6,18 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Company } from 'src/entities/company.entity';
 import { User } from 'src/entities/user.entity';
 import { UserModule } from 'src/features/user/user.module';
-import { JwtConfig, JwtConfigOptions } from 'src/infra/config';
+import { JwtConfigFactory, JwtConfig } from 'src/infra/config';
 import { LocalStrategy, JwtStrategy, UserValidator } from 'src/validations';
 
 @Module({
     imports: [
-        ConfigModule.forRoot({ load: [JwtConfig] }),
+        ConfigModule.forRoot({ load: [JwtConfigFactory] }),
         TypeOrmModule.forFeature([User, Company]),
         JwtModule.registerAsync({
             imports: [ConfigModule],
             inject: [ConfigService],
             useFactory: (configService: ConfigService) => {
-                const config = JwtConfigOptions.FromService(configService);
+                const config = JwtConfig.FromService(configService);
 
                 return {
                     secret: config.secret,
