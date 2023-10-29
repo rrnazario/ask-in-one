@@ -7,6 +7,16 @@ export interface IBaseConfiguration<T extends IBaseOptions> {
     FromService(configService: ConfigService): T;
 }
 
-export function fromService<T extends IBaseOptions>(path: string, configService: ConfigService): T {
-    return configService.get<T>(path);
-};
+export abstract class BaseConfiguration<T> implements IBaseConfiguration<T> {
+    protected key: string;
+
+    constructor(path: string) {
+        this.key = path
+    }
+    
+    abstract Factory: (() => T) & ConfigFactoryKeyHost<T>;
+
+    FromService(configService: ConfigService<Record<string, unknown>, false>): T {
+        return configService.get<T>(this.key);
+    }
+}
